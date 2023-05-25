@@ -79,6 +79,7 @@ func reconcileCurveDaemons(c *daemon.Cluster) error {
 	if err != nil {
 		return err
 	}
+
 	// chunkserver
 	chunkservers := chunkserver.New(c)
 	dcs, err = chunkservers.Start(nodesInfo, dcs)
@@ -123,7 +124,7 @@ func reconcileCurveFSDaemons(c *daemon.Cluster) error {
 
 	if c.Monitor.Enable {
 		monitor := monitor.New(c)
-		monitor.Start(nodesInfo, dcs)
+		err = monitor.Start(nodesInfo, dcs)
 		if err != nil {
 			return err
 		}
