@@ -10,6 +10,14 @@ const (
 )
 
 const (
+	ROLE_ETCD          = "etcd"
+	ROLE_MDS           = "mds"
+	ROLE_CHUNKSERVER   = "chunkserver"
+	ROLE_SNAPSHOTCLONE = "snapshotclone"
+	ROLE_METASERVER    = "metaserver"
+)
+
+const (
 	// configmap to record the endpoints of etcd
 	EtcdOverrideConfigMapName    = "etcd-endpoints-override"
 	EtcdOvverideConfigMapDataKey = "etcdEndpoints"
@@ -86,6 +94,11 @@ const (
 	MetaServerConfigMapName      = "metaserver-conf"
 	MetaServerConfigMapDataKey   = "metaserver.conf"
 	MetaServerConfigMapMountPath = "/curvefs/metaserver/conf"
+
+	// report.sh
+	ReportConfigMapName            = "report-conf"
+	ReportConfigMapDataKey         = "report.sh"
+	ReportConfigMapMountPathCommon = "tools/sbin/report" // a new path
 )
 
 const (

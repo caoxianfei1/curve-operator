@@ -22,3 +22,6 @@ type DeployConfig struct {
 	Replicas         int
 	StandAlone       bool
 }
+
+func (dc *DeployConfig) GetKind() string { return dc.Kind }
+func (dc *DeployConfig) GetRole() string { return dc.Role }

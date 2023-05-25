@@ -159,7 +159,7 @@ func (c *Cluster) buildConfigs(nodesInfo []daemon.NodeInfo) ([]*metaserverConfig
 
 		dc := &topology.DeployConfig{
 			Kind:             c.Kind,
-			Role:             "metaserver",
+			Role:             config.ROLE_METASERVER,
 			Copysets:         c.Metaserver.CopySets,
 			NodeName:         node.NodeName,
 			NodeIP:           node.NodeIP,

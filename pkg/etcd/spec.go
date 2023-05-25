@@ -155,8 +155,6 @@ func (c *Cluster) makeDeployment(nodeName string, ip string, etcdConfig *etcdCon
 
 // makeChmodDirInitContainer make init container to chmod 700 of ContainerDataDir('/curvebs/etcd/data')
 func (c *Cluster) makeChmodDirInitContainer(etcdConfig *etcdConfig) v1.Container {
-	// clientPort, _ := strconv.Atoi(etcdConfig.ServiceClientPort)
-	// peerPort, _ := strconv.Atoi(etcdConfig.ServicePort)
 	container := v1.Container{
 		Name: "chmod",
 		// Args:            args,
@@ -165,26 +163,14 @@ func (c *Cluster) makeChmodDirInitContainer(etcdConfig *etcdConfig) v1.Container
 		ImagePullPolicy: c.CurveVersion.ImagePullPolicy,
 		VolumeMounts:    daemon.DaemonVolumeMounts(config.EtcdConfigMapDataKey, config.EtcdConfigMapMountPathDir, etcdConfig.DataPathMap, etcdConfig.CurrentConfigMapName),
 		Env:             []v1.EnvVar{{Name: "TZ", Value: "Asia/Hangzhou"}},
-		Ports: []v1.ContainerPort{
-			{
-				Name:          "listen-port",
-				ContainerPort: 9898,
-				HostPort:      9898,
-				Protocol:      v1.ProtocolTCP,
-			},
-			{
-				Name:          "peer-port",
-				ContainerPort: int32(9899),
-				HostPort:      int32(9899),
-				Protocol:      v1.ProtocolTCP,
-			},
-		},
 	}
 	return container
 }
 
 // makeEtcdDaemonContainer create etcd container
 func (c *Cluster) makeEtcdDaemonContainer(nodeName string, ip string, etcdConfig *etcdConfig, init_cluster string) v1.Container {
+	volumeMounts := daemon.DaemonVolumeMounts(config.EtcdConfigMapDataKey, config.EtcdConfigMapMountPathDir, etcdConfig.DataPathMap, etcdConfig.CurrentConfigMapName)
+
 	clientPort, _ := strconv.Atoi(etcdConfig.ServiceClientPort)
 	peerPort, _ := strconv.Atoi(etcdConfig.ServicePort)
 	var commandLine string
@@ -207,7 +193,7 @@ func (c *Cluster) makeEtcdDaemonContainer(nodeName string, ip string, etcdConfig
 		},
 		Image:           c.CurveVersion.Image,
 		ImagePullPolicy: c.CurveVersion.ImagePullPolicy,
-		VolumeMounts:    daemon.DaemonVolumeMounts(config.EtcdConfigMapDataKey, config.EtcdConfigMapMountPathDir, etcdConfig.DataPathMap, etcdConfig.CurrentConfigMapName),
+		VolumeMounts:    volumeMounts,
 		Ports: []v1.ContainerPort{
 			{
 				Name:          "listen-port",

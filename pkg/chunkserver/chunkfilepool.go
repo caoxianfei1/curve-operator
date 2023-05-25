@@ -176,7 +176,7 @@ func (c *Cluster) startProvisioningOverNodes(nodesInfo []daemon.NodeInfo) ([]*to
 
 				dc := &topology.DeployConfig{
 					Kind:             c.Kind,
-					Role:             "chunkserver",
+					Role:             config.ROLE_CHUNKSERVER,
 					Copysets:         c.Chunkserver.CopySets,
 					NodeName:         node.nodeName,
 					NodeIP:           node.nodeIP,
